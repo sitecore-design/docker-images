@@ -61,7 +61,8 @@ function Sync {
 
     $command = @("robocopy", "`"$Path`"", "`"$Destination`"", "/E", "/XX", "/MT:1", "/NJH", "/NJS", "/FP", "/NDL", "/NP", "/NS", "/R:5", "/W:1")
 
-    if ($ExcludeDirectories.Count -gt 0) {
+    if ($ExcludeDirectories.Count -gt 0)
+    {
         $command += "/XD "
 
         $ExcludeDirectories | ForEach-Object {
@@ -71,7 +72,8 @@ function Sync {
         $command = $command.TrimEnd()
     }
 
-    if ($ExcludeFiles.Count -gt 0) {
+    if ($ExcludeFiles.Count -gt 0)
+    {
         $command += "/XF "
 
         $ExcludeFiles | ForEach-Object {
@@ -89,12 +91,14 @@ function Sync {
         $line = $_.Trim().Replace("`r`n", "").Replace("`t", " ")
         $dirty = ![string]::IsNullOrEmpty($line)
 
-        if ($dirty) {
+        if ($dirty)
+        {
             Write-Host ("{0}: {1}" -f [DateTime]::Now.ToString("HH:mm:ss:fff"), $line) -ForegroundColor DarkGray
         }
     }
 
-    if ($dirty) {
+    if ($dirty)
+    {
         Write-Host ("{0}: Done syncing..." -f [DateTime]::Now.ToString("HH:mm:ss:fff")) -ForegroundColor Green
     }
 }
@@ -103,7 +107,8 @@ function Sync {
 $fileRules = ($DefaultExcludedFiles + $ExcludeFiles) | Select-Object -Unique
 
 # Don't sync xdt files to webroot if transformations are going to be applied
-if ($TransformXdts) {
+if ($TransformXdts)
+{
     $fileRules = ($fileRules + @("*.xdt")) | Select-Object -Unique
 }
 $directoryRules = ($DefaultExcludedDirectories + $ExcludeDirectories) | Select-Object -Unique
@@ -124,7 +129,8 @@ Register-ObjectEvent $watcher Deleted -SourceIdentifier "FileDeleted" -MessageDa
     $destinationPath = Join-Path $event.MessageData $eventArgs.Name
     $delete = !(Test-Path $eventArgs.FullPath) -and (Test-Path $destinationPath)
 
-    if ($delete) {
+    if ($delete)
+    {
         try {
             Remove-Item -Path $destinationPath -Force -Recurse -ErrorAction "SilentlyContinue"
 
@@ -152,7 +158,8 @@ finally {
     # Cleanup
     Get-EventSubscriber -SourceIdentifier "FileDeleted" | Unregister-Event
 
-    if ($null -eq $watcher) {
+    if ($null -eq $watcher)
+    {
         $watcher.Dispose()
         $watcher = $null
     }
