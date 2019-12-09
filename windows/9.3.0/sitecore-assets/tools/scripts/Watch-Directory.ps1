@@ -47,6 +47,7 @@ function ApplyTransforms {
         Remove-Item $_
     }
 }
+
 function Sync {
     param(
         [Parameter(Mandatory = $true)]
