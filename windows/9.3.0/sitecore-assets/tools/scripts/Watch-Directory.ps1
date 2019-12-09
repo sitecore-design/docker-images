@@ -131,7 +131,8 @@ Register-ObjectEvent $watcher Deleted -SourceIdentifier "FileDeleted" -MessageDa
 
     if ($delete)
     {
-        try {
+        try
+        {
             Remove-Item -Path $destinationPath -Force -Recurse -ErrorAction "SilentlyContinue"
 
             Write-Host ("{0}: Deleted '{1}'..." -f [DateTime]::Now.ToString("HH:mm:ss:fff"), $destinationPath) -ForegroundColor Green
@@ -142,7 +143,8 @@ Register-ObjectEvent $watcher Deleted -SourceIdentifier "FileDeleted" -MessageDa
     }
 } | Out-Null
 
-try {
+try
+{
     Write-Host ("{0}: Watching '{1}' for changes, will copy to '{2}'..." -f [DateTime]::Now.ToString("HH:mm:ss:fff"), $Path, $Destination)
 
     # Main loop
@@ -154,7 +156,8 @@ try {
         Start-Sleep -Milliseconds $SleepMilliseconds
     }
 }
-finally {
+finally
+{
     # Cleanup
     Get-EventSubscriber -SourceIdentifier "FileDeleted" | Unregister-Event
 
