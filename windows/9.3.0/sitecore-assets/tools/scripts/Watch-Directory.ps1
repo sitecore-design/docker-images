@@ -137,7 +137,8 @@ Register-ObjectEvent $watcher Deleted -SourceIdentifier "FileDeleted" -MessageDa
 
             Write-Host ("{0}: Deleted '{1}'..." -f [DateTime]::Now.ToString("HH:mm:ss:fff"), $destinationPath) -ForegroundColor Green
         }
-        catch {
+        catch
+        {
             Write-Host ("{0}: Could not delete '{1}'..." -f [DateTime]::Now.ToString("HH:mm:ss:fff"), $destinationPath) -ForegroundColor Red
         }
     }
@@ -148,7 +149,8 @@ try
     Write-Host ("{0}: Watching '{1}' for changes, will copy to '{2}'..." -f [DateTime]::Now.ToString("HH:mm:ss:fff"), $Path, $Destination)
 
     # Main loop
-    while ($true) {
+    while ($true)
+    {
         Sync -Path $Path -Destination $Destination -ExcludeFiles $fileRules -ExcludeDirectories $directoryRules
         if ($TransformXdts) {
             ApplyTransforms -sourcePath $TransformSourcePath -destination $Destination
