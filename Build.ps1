@@ -23,7 +23,7 @@ param(
     [string[]]$SitecoreVersion = @("10.0.0"),
     [ValidateSet("xm", "xp", "xc", "xp0")]
     [string[]]$Topology = @("xm", "xp", "xp0"),
-    [ValidateSet("2004", "1909", "1903", "ltsc2019", "linux")]
+    [ValidateSet("2009", "2004", "1909", "1903", "ltsc2019", "linux")]
     [string[]]$OSVersion = @("ltsc2019"),
     [Parameter()]
     [switch]$IncludeSpe,
@@ -44,7 +44,11 @@ param(
     [string]$IsolationModeBehaviour = "ForceHyperV",
     [Parameter(Mandatory = $false, HelpMessage = "If supplied, will output a 'docker-images.json' file in the working folder")]
     [switch]
-    $OutputJson
+    $OutputJson,
+    [Parameter(Mandatory = $false)]
+    [string]$SitecoreRegistry = "scr.sitecore.com",
+    [Parameter(Mandatory = $false)]
+    [switch]$IncludeShortTags
 )
 
 Push-Location build
@@ -74,6 +78,7 @@ Import-Module (Join-Path $(Get-Location) "\modules\SitecoreImageBuilder") -Requi
 $tags = [System.Collections.ArrayList]@()
 
 $windowsVersionMapping = @{
+    "2009"     = "2009"
     "2004"     = "2004"
     "1909"     = "1909"
     "1903"     = "1903"
@@ -354,9 +359,7 @@ if ($IncludeExperimental -eq $true)
 {
     # restore any missing experimental packages
     .\Download-Module-Prerequisites.ps1 `
-        -InstallSourcePath $InstallSourcePath `
-        -SitecoreUsername $SitecoreUsername `
-        -SitecorePassword $SitecorePassword
+        -InstallSourcePath $InstallSourcePath
 }
 
 # start the build
@@ -364,9 +367,11 @@ SitecoreImageBuilder\Invoke-Build `
     -Path (Join-Path $(Get-Location) $rootFolder) `
     -InstallSourcePath $InstallSourcePath `
     -Registry $Registry `
+    -SitecoreRegistry $SitecoreRegistry `
     -Tags $tags `
     -ExperimentalTagBehavior:(@{$true = "Include"; $false = "Skip" }[$IncludeExperimental -eq $true]) `
     -IsolationModeBehaviour $IsolationModeBehaviour `
+    -IncludeShortTags:$IncludeShortTags `
     -WhatIf:$WhatIfPreference
 
 Pop-Location

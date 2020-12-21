@@ -1,7 +1,9 @@
 
 # How to use
 
-These instructions will help you understand how to build custom images derived from the official Sitecore v10 images as well as how to build full Sitecore images using legacy (pre v10) assets.
+These instructions will help you understand how to **build custom images** derived from the official Sitecore v10 images as well as how to build full Sitecore images using legacy (pre v10) assets.
+
+> **For detailed documentation on how to get started running Sitecore version 10 or above in a containerized environment, please see the [official documentation](https://containers.doc.sitecore.com/docs/intro)**
 
 ## Tagging and Windows versions
 
@@ -210,6 +212,8 @@ Experimental modules include, and are not limited to:
 - Sitecore Connect for Microsoft Dynamics 365 for Sales
 - Sitecore Connect for CMP
 - Sitecore Connect for Sitecore DAM
+- Coveo for Sitecore
+- Coveo for Sitecore SXA
 
 Azure Toolkit has also prerequisites, see (https://doc.sitecore.com/developers/sat/20/sitecore-azure-toolkit/en/getting-started-with-the-sitecore-azure-toolkit.html)
 
